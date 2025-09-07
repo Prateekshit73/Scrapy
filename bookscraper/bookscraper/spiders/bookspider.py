@@ -1,10 +1,26 @@
 import scrapy
 from bookscraper.items import BookItem
+# import random
+# from urllib.parse import urlencode
+
+# API_KEY = 'df079156-1232-41f4-994c-955c3924aef4'
+
+# def get_proxy_url(url):
+#     payload = {'api_key': API_KEY, 'url': url}
+#     proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
+#     return proxy_url
 
 class BookspiderSpider(scrapy.Spider):
     name = "bookspider"
-    allowed_domains = ["books.toscrape.com"]
+    allowed_domains = ["books.toscrape.com", "proxy.scrapeops.io"]
     start_urls = ["https://books.toscrape.com"]
+
+    # def start_requests(self):
+    #     yield scrapy.Request(url = get_proxy_url(self.start_urls[0]), callback = self.parse)
+
+    # user_agent_list = [
+    #     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    # ]
 
     def parse(self, response):
         books = response.css("article.product_pod")
@@ -17,7 +33,9 @@ class BookspiderSpider(scrapy.Spider):
                     book_page_url = (
                         "https://books.toscrape.com/catalogue/" + relative_url
                     )
-
+                # yield response.follow(book_page_url, callback=self.parse_page, headers = {"User-Agent": self.user_agent_list[random.randint(0, len(self.user_agent_list) - 1)]})
+                # yield response.follow(book_page_url, callback=self.parse_page, meta = {'proxy': 'http://user-asdas3a4545:12345678@gate.smartproxy.com:7000'})
+                # yield response.follow(url = get_proxy_url(book_page_url), callback = self.parse_page)
                 yield response.follow(book_page_url, callback=self.parse_page)
 
             next_page = response.css("li.next a::attr(href)").get()
@@ -26,7 +44,9 @@ class BookspiderSpider(scrapy.Spider):
                     next_page_url = "https://books.toscrape.com/" + next_page
                 else:
                     next_page_url = "https://books.toscrape.com/catalogue/" + next_page
-
+                # yield response.follow(next_page_url, callback=self.parse, headers = {"User-Agent": self.user_agent_list[random.randint(0, len(self.user_agent_list) - 1)]})
+                # yield response.follow(next_page_url, callback=self.parse, meta = {'proxy': 'http://user-asdas3a4545:12345678@gate.smartproxy.com:7000'})
+                # yield response.follow(url = get_proxy_url(next_page_url), callback = self.parse)
                 yield response.follow(next_page_url, callback=self.parse)
 
     def parse_page(self, response):
