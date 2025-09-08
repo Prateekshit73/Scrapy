@@ -10,6 +10,7 @@ from bookscraper.items import BookItem
 #     proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
 #     return proxy_url
 
+
 class BookspiderSpider(scrapy.Spider):
     name = "bookspider"
     allowed_domains = ["books.toscrape.com", "proxy.scrapeops.io"]
@@ -52,9 +53,11 @@ class BookspiderSpider(scrapy.Spider):
     def parse_page(self, response):
         table_rows = response.css("table tr")
         book_item = BookItem()
-        book_item["url"] =  response.url
-        book_item["title"] =  response.css(".product_main h1::text").get()
-        book_item["product_type"] =  table_rows[1].css("td ::text").get()
-        book_item["tax"] =  table_rows[4].css("td ::text").get()
-        book_item["description"] =  response.xpath("//div[@id='product_description']/following-sibling::p/text()").get()
+        book_item["url"] = response.url
+        book_item["title"] = response.css(".product_main h1::text").get()
+        book_item["product_type"] = table_rows[1].css("td ::text").get()
+        book_item["tax"] = table_rows[4].css("td ::text").get()
+        book_item["description"] = response.xpath(
+            "//div[@id='product_description']/following-sibling::p/text()"
+        ).get()
         yield book_item

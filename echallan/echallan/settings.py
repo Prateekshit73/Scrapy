@@ -14,12 +14,17 @@ NEWSPIDER_MODULE = "echallan.spiders"
 
 ADDONS = {}
 
+SCRAPEOPS_API_KEY = 'df070156-1232-41f4-994c-955c3924aef4'
+SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = "https://headers.scrapeops.io/v1/user-agents"
+SCRAPEOPS_FAKE_USER_AGENTS_ENABLED = True
+SCRAPEOPS_NUM_RESULTS = 50
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "echallan (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Concurrency and throttling settings
 #CONCURRENT_REQUESTS = 16
@@ -46,9 +51,10 @@ DOWNLOAD_DELAY = 1
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    "echallan.middlewares.EchallanDownloaderMiddleware": 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    "echallan.middlewares.EchallanDownloaderMiddleware": 543,
+    "echallan.middlewares.ScrapeOpsFakeUserAgentMiddleware": 400,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
