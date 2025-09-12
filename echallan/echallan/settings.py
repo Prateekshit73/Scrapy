@@ -26,10 +26,11 @@ SCRAPEOPS_NUM_RESULTS = 50
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
-# Concurrency and throttling settings
-#CONCURRENT_REQUESTS = 16
+# Concurrency and throttling settings for captcha handling
+CONCURRENT_REQUESTS = 1  # Process one vehicle at a time
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 3  # Increased delay for captcha sites
+RANDOMIZE_DOWNLOAD_DELAY = True  # Add randomness to avoid detection
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
@@ -64,9 +65,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "echallan.pipelines.EchallanPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "echallan.pipelines.EchallanPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
